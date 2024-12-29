@@ -16,9 +16,9 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    def services = ['api', 'books-service', 'users-service']
+                    def services = ['apiGateway', 'books-service', 'users-service'] // Correct service names here
                     services.each { service ->
-                        sh "docker build -t ${env.DOCKER_HUB_REPO}:${service} ./${service}"
+                        sh "docker build -t ${env.DOCKER_HUB_REPO}:${service} ./${service}" // Builds Docker images for each service
                     }
                 }
             }
@@ -27,7 +27,7 @@ pipeline {
         stage('Scan Docker Images') {
             steps {
                 script {
-                    def services = ['api', 'books-service', 'users-service']
+                    def services = ['apiGateway', 'books-service', 'users-service'] // Correct service names here
                     services.each { service ->
                         sh """
                         trivy image --exit-code 1 --severity HIGH,CRITICAL ${env.DOCKER_HUB_REPO}:${service} || true
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', env.DOCKER_HUB_CREDENTIALS) {
-                        def services = ['api', 'books-service', 'users-service']
+                        def services = ['apiGateway', 'books-service', 'users-service'] // Correct service names here
                         services.each { service ->
                             sh "docker push ${env.DOCKER_HUB_REPO}:${service}"
                         }
