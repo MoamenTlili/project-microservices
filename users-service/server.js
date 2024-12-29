@@ -10,7 +10,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const usersProto = grpc.loadPackageDefinition(packageDefinition);
 
 // Connect to MongoDB
-const mongoClient = new MongoClient('mongodb://localhost:27017/library');
+const mongoClient = new MongoClient(process.env.MONGO_URL ||'mongodb://localhost:27017/library');
 
 mongoClient.connect().then(async () => {
   const db = mongoClient.db('library');

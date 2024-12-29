@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: ./apiGateway 
+    ports:
+      - "3000:3000"
+    depends_on:
+      - books-service
+      - users-service
+
+  books-service:
+    build:
+      context: ./books-service
+    ports:
+      - "50051:50051"
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URL: mongodb://mongo:27017/library
+
+  users-service:
+    build:
+      context: ./users-service
+    ports:
+      - "50052:50052"
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URL: mongodb://mongo:27017/library
+
+  mongo:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

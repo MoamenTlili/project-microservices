@@ -112,12 +112,8 @@ function getBookById(bookId) {
   });
 }
 
-
-
-
-
 // Example usage "CREATE":
-createBook('Theexam', 'Joell', 20.99);
+//createBook('Theexam', 'Joell', 20.99);
 
 //Example usage "DELETE":
 //deleteBook('663de94af746d37dcb863eba');
