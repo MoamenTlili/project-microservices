@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage('Push to Docker Hub') {
+        /*stage('Push to Docker Hub') {
             steps {
                 script {
                     // Push the Docker images to Docker Hub
@@ -50,7 +50,19 @@ pipeline {
                 }
             }
         }
-    }
+    }*/
+        stage('Push to Docker Hub') {
+            when {
+                expression { return false } // Always skip this stage
+            }
+            steps {
+                // Docker push commands
+                sh 'docker push moamrn:apiGateway'
+                sh 'docker push moamrn:books-service'
+                sh 'docker push moamrn:users-service'
+            }
+        }
+
 
     post {
         success {
