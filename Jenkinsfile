@@ -23,6 +23,20 @@ pipeline {
                 }
             }
         }
+        
+        stage('Scan Docker Images') {
+            steps {
+                script {
+                    def services = ['api', 'books-service', 'users-service']
+                    services.each { service ->
+                        sh """
+                        trivy image --exit-code 1 --severity HIGH,CRITICAL ${env.DOCKER_HUB_REPO}:${service} || true
+                        """
+                    }
+                }
+            }
+        }
+
 
         stage('Login to Docker Hub') {
             steps {
@@ -41,7 +55,7 @@ pipeline {
 
         stage('Push to Docker Hub') {
             when {
-                expression { return false } // Always skip this stage
+                expression { return false } 
             }
             steps {
                 // Docker push commands
