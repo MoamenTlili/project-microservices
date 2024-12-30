@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('Docker Hub Credentials') 
+        DOCKER_HUB_CREDENTIALS = credentials('63fd3a88-d36b-479e-863b-a0881fde4f7e') 
         DOCKER_HUB_REPO = 'moamrn' 
     }
 
