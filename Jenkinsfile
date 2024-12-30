@@ -24,17 +24,30 @@ pipeline {
             }
         }
 
+        /*stage('Scan Docker Images') {
+            steps {
+                script {
+                    sh '''
+                    trivy image --exit-code 1 --severity HIGH,CRITICAL --skip-update --light moamrn:apiGateway
+                    trivy image --exit-code 1 --severity HIGH,CRITICAL --skip-update --light moamrn:books-service
+                    trivy image --exit-code 1 --severity HIGH,CRITICAL --skip-update --light moamrn:users-service
+                    '''
+                }
+            }
+        }*/
         stage('Scan Docker Images') {
-    steps {
-        script {
-            sh '''
-            trivy image --exit-code 1 --severity HIGH,CRITICAL --skip-update --light moamrn:apiGateway
-            trivy image --exit-code 1 --severity HIGH,CRITICAL --skip-update --light moamrn:books-service
-            trivy image --exit-code 1 --severity HIGH,CRITICAL --skip-update --light moamrn:users-service
-            '''
+            steps {
+                script {
+                    def services = ['apiGateway', 'books-service', 'users-service']
+                    services.each { service ->
+                        sh """
+                        trivy image --exit-code 1 --severity HIGH,CRITICAL --skip-db-update --scanners vuln moamrn:${service}
+                        """
+                    }
+                }
+            }
         }
-    }
-}
+
 
         stage('Push to Docker Hub') {
             steps {
