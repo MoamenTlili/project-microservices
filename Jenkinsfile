@@ -25,13 +25,11 @@ pipeline {
         }
 
 
-        stages {
-            stage('Login to Docker Hub') {
-                steps {
-                    script {
-                        docker.withRegistry('https://index.docker.io/v1/', '63fd3a88-d36b-479e-863b-a0881fde4f7e') {
-                            // Docker login will be handled here automatically
-                        }
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'Docker Hub Credentials') {
+                        // Docker login will be handled here automatically
                     }
                 }
             }
