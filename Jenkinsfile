@@ -6,12 +6,12 @@ pipeline {
         DOCKER_HUB_REPO = 'moamrn'
     }
 
-    stage('Checkout Code') {
-        steps {
-            git branch: 'main', url: 'https://github.com/MoamenTlili/project-microservices.git'
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/MoamenTlili/project-microservices.git'
+            }
         }
-    }
-
 
         stage('Build Docker Images') {
             steps {
@@ -61,6 +61,7 @@ pipeline {
         }
     }
 }
+
 
 
 
