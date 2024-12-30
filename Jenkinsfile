@@ -114,7 +114,7 @@ pipeline {
                     '''
                 }
             }
-        }*/
+        }
         /*stage('Scan Docker Images') {
             steps {
                 script {
@@ -126,7 +126,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
 
         stage('Push to Docker Hub') {
@@ -151,4 +151,4 @@ pipeline {
             echo 'Pipeline failed!'
         }
     }
-}
+}*/
