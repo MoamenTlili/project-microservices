@@ -2,6 +2,71 @@ pipeline {
     agent any
 
     environment {
+        DOCKER_HUB_CREDENTIALS = credentials('63fd3a88-d36b-479e-863b-a0881fde4f7e')
+        DOCKER_HUB_REPO = 'moamrn'
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                script {
+                    def services = ['apiGateway', 'books-service', 'users-service']
+                    services.each { service ->
+                        sh "docker build -t ${env.DOCKER_HUB_REPO}:${service} ./${service}"
+                    }
+                }
+            }
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    // Use the credentials reference from the environment variable
+                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_HUB_CREDENTIALS) {
+                        // Docker login will be handled here automatically
+                    }
+                }
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Use the credentials reference from the environment variable
+                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_HUB_CREDENTIALS) {
+                        def services = ['apiGateway', 'books-service', 'users-service']
+                        services.each { service ->
+                            sh "docker push ${env.DOCKER_HUB_REPO}:${service}"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
+
+
+
+
+/*pipeline {
+    agent any
+
+    environment {
         DOCKER_HUB_CREDENTIALS = credentials('63fd3a88-d36b-479e-863b-a0881fde4f7e') 
         DOCKER_HUB_REPO = 'moamrn' 
     }
