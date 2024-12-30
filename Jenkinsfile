@@ -37,20 +37,6 @@ pipeline {
             }
         }
 
-        /*stage('Push to Docker Hub') {
-            steps {
-                script {
-                    // Push the Docker images to Docker Hub
-                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_HUB_CREDENTIALS) {
-                        def services = ['apiGateway', 'books-service', 'users-service']
-                        services.each { service ->
-                            sh "docker push ${env.DOCKER_HUB_REPO}:${service}"
-                        }
-                    }
-                }
-            }
-        }
-    }*/
         stage('Push to Docker Hub') {
             when {
                 expression { return false } // Always skip this stage
@@ -62,7 +48,7 @@ pipeline {
                 sh 'docker push moamrn:users-service'
             }
         }
-
+    }
 
     post {
         success {
