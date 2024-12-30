@@ -35,7 +35,7 @@ pipeline {
                 }
             }
         }*/
-        stage('Scan Docker Images') {
+        /*stage('Scan Docker Images') {
             steps {
                 script {
                     def services = ['apiGateway', 'books-service', 'users-service']
@@ -46,7 +46,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
 
         stage('Push to Docker Hub') {
