@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('63fd3a88-d36b-479e-863b-a0881fde4f7e')
         DOCKER_HUB_REPO = 'moamrn'
     }
 
@@ -28,9 +27,12 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 script {
-                    // Explicit login to Docker Hub
+                    // Login to Docker Hub using stored credentials
                     echo "Logging into Docker Hub as ${env.DOCKER_HUB_REPO}"
-                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_HUB_CREDENTIALS) {
+                    withCredentials([usernamePassword(credentialsId: '63fd3a88-d36b-479e-863b-a0881fde4f7e', 
+                                                     usernameVariable: 'DOCKER_USERNAME', 
+                                                     passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                         echo "Successfully logged into Docker Hub."
                     }
                 }
@@ -59,6 +61,7 @@ pipeline {
         }
     }
 }
+
 
 
 
