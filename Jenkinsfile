@@ -6,13 +6,12 @@ pipeline {
         DOCKER_HUB_REPO = 'moamrn'
     }
 
-    stages {
-        stage('Checkout Code') {
-            steps {
-                // Simplified as your GitHub repo is public
-                git 'https://github.com/MoamenTlili/project-microservices.git'
-            }
+    stage('Checkout Code') {
+        steps {
+            git branch: 'main', url: 'https://github.com/MoamenTlili/project-microservices.git'
         }
+    }
+
 
         stage('Build Docker Images') {
             steps {
