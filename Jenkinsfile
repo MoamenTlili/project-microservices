@@ -9,7 +9,8 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                checkout scm
+                // Simplified as your GitHub repo is public
+                git 'https://github.com/MoamenTlili/project-microservices.git'
             }
         }
 
@@ -18,6 +19,7 @@ pipeline {
                 script {
                     def services = ['apiGateway', 'books-service', 'users-service']
                     services.each { service ->
+                        // Build Docker images for each service
                         sh "docker build -t ${env.DOCKER_HUB_REPO}:${service} ./${service}"
                     }
                 }
@@ -27,10 +29,9 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 script {
-                    // Explicitly logging into Docker Hub
+                    // Explicit login to Docker Hub
                     echo "Logging into Docker Hub as ${env.DOCKER_HUB_REPO}"
                     docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_HUB_CREDENTIALS) {
-                        // Docker login will be handled here automatically
                         echo "Successfully logged into Docker Hub."
                     }
                 }
@@ -40,7 +41,7 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    // Use the credentials reference from the environment variable
+                    // Push the Docker images to Docker Hub
                     docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_HUB_CREDENTIALS) {
                         def services = ['apiGateway', 'books-service', 'users-service']
                         services.each { service ->
@@ -61,6 +62,7 @@ pipeline {
         }
     }
 }
+
 
 
 
