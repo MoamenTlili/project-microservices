@@ -1,0 +1,41 @@
+# Service for API Gateway
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Chart.Name }}-api-gateway"
+spec:
+  selector:
+    app: api-gateway
+  ports:
+    - protocol: TCP
+      port: {{ .Values.api.service.port }}
+      targetPort: {{ .Values.api.service.port }}
+  type: NodePort
+---
+# Service for Books Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Chart.Name }}-books-service"
+spec:
+  selector:
+    app: books-service
+  ports:
+    - protocol: TCP
+      port: {{ .Values.books.service.port }}
+      targetPort: {{ .Values.books.service.port }}
+  type: ClusterIP
+---
+# Service for Users Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Chart.Name }}-users-service"
+spec:
+  selector:
+    app: users-service
+  ports:
+    - protocol: TCP
+      port: {{ .Values.users.service.port }}
+      targetPort: {{ .Values.users.service.port }}
+  type: ClusterIP

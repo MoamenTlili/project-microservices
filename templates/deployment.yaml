@@ -1,0 +1,77 @@
+# Deployment for API Gateway
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}-api-gateway"
+  labels:
+    app: api-gateway
+spec:
+  replicas: {{ .Values.api.replicas }}
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: "{{ .Values.api.image }}"
+          ports:
+            - containerPort: {{ .Values.api.service.port }}
+          env:
+            - name: PORT
+              value: "{{ .Values.api.service.port }}"
+---
+# Deployment for Books Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}-books-service"
+  labels:
+    app: books-service
+spec:
+  replicas: {{ .Values.books.replicas }}
+  selector:
+    matchLabels:
+      app: books-service
+  template:
+    metadata:
+      labels:
+        app: books-service
+    spec:
+      containers:
+        - name: books-service
+          image: "{{ .Values.books.image }}"
+          ports:
+            - containerPort: {{ .Values.books.service.port }}
+          env:
+            - name: MONGO_URI
+              value: "{{ .Values.mongodb.uri }}"
+---
+# Deployment for Users Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}-users-service"
+  labels:
+    app: users-service
+spec:
+  replicas: {{ .Values.users.replicas }}
+  selector:
+    matchLabels:
+      app: users-service
+  template:
+    metadata:
+      labels:
+        app: users-service
+    spec:
+      containers:
+        - name: users-service
+          image: "{{ .Values.users.image }}"
+          ports:
+            - containerPort: {{ .Values.users.service.port }}
+          env:
+            - name: MONGO_URI
+              value: "{{ .Values.mongodb.uri }}"
