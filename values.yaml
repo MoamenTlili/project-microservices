@@ -18,5 +18,3 @@ users:
 
 mongodb:
   uri: mongodb://library-mongodb:27017/library
-
-
