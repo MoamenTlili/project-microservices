@@ -1,21 +1,22 @@
 api:
-  image: moamrn:apiGateway
+  image: moamrn/apigateway  
   replicas: 2
   service:
     port: 3000
 
 books:
-  image: moamrn:books-service
+  image: moamrn/books-service  
   replicas: 2
   service:
     port: 50051
 
 users:
-  image: moamrn:users-service
+  image: moamrn/users-service 
   replicas: 2
   service:
     port: 50052
 
 mongodb:
   uri: mongodb://library-mongodb:27017/library
+
 
