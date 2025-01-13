@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
       - name: books-service
-        image: moamrn:books-service 
+        image: moamrn/books-service:latest # Correct image path
         ports:
         - containerPort: 50051
         env:
         - name: MONGO_URI
-          value: "mongodb://library-mongodb:27017/library" 
+          value: "mongodb://library-mongodb:27017/library"
