@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: moamrn:apiGateway # Updated to match your image name
+        image: moamrn:apiGateway 
         ports:
         - containerPort: 3000
         env:
